@@ -7,7 +7,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@rocketseat/eslint-config/react": ["../node_modules/@rocketseat/eslint-config/react"]
     }
   }
 }
