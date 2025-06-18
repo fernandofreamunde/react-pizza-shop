@@ -1,15 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ArrowRight, Search, X } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { OrderTableRow } from "./order-table-row";
+import { OrderTableFilters } from "./orders-table-filters";
 
 export function Orders() {
   return (
@@ -19,10 +17,7 @@ export function Orders() {
         <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
       </div>
       <div className="space-y-2.5">
-        <form className="flex items-center gap-2">
-          <span className="text-sm font-semibold">Filters:</span>
-          <Input placeholder="Customer name" className="h-8 w-[320px]" />
-        </form>
+        <OrderTableFilters />
 
         <div className="rounded-md border">
           <Table>
@@ -41,46 +36,7 @@ export function Orders() {
 
             <TableBody>
               {Array.from({ length: 10 }).map((_, i) => {
-                return (
-                  <TableRow key={i}>
-                    <TableCell>
-                      <Button variant="outline" size="xs">
-                        <Search className="h-3 w-3" />
-                        <span className="sr-only">Order Detail</span>
-                      </Button>
-                    </TableCell>
-                    <TableCell className="font-mono text-xs font-medium">
-                      5lntJL4XSZ1M8ZJ
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      15 minutes ago
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-slate-400" />
-                        <span className="text-muted-foreground font-medium">
-                          Pending
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      Diego Schell Fernandes
-                    </TableCell>
-                    <TableCell className="font-medium">€ 35.50</TableCell>
-                    <TableCell>
-                      <Button variant="outline" size="xs">
-                        <ArrowRight className="mr-2 h-3 w-3" />
-                        Approve
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="outline" size="xs">
-                        <X className="mr-2 h-3 w-3" />
-                        Cancel
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
+                return <OrderTableRow key={i} />;
               })}
             </TableBody>
           </Table>
