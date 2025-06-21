@@ -6,6 +6,8 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Link } from "react-router";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "@/api/login";
 
 const loginForm = z.object({
   email: z.string().email(),
@@ -20,11 +22,15 @@ export function Login() {
     formState: { isSubmitting },
   } = useForm<LoginForm>();
 
+  const { mutateAsync: authenticate } = useMutation({
+    mutationFn: login,
+  });
+
   async function handleLogin(data: LoginForm) {
     console.log(data);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await authenticate({ email: data.email });
       toast.success("We have sent you a magic link 🪄 to your email.", {
         action: {
           label: "Re Send",
