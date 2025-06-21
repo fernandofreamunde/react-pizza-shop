@@ -11,6 +11,7 @@ export function App() {
 
       <Toaster richColors />
 
+      {/* // yea I really like conflicts */}
       <RouterProvider router={router} />
     </HelmetProvider>
   );

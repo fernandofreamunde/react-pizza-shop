@@ -35,6 +35,7 @@ export function Login() {
       });
     } catch (error) {
       toast.error("Invalid credentials");
+      // just something to conflict with
     }
   }
 
