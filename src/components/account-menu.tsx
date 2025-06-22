@@ -8,14 +8,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getProfile } from "@/api/get-profile";
 import { getManagedRestaurant } from "@/api/get-managed-restaurant";
 import { Skeleton } from "./ui/skeleton";
 import { Dialog, DialogTrigger } from "./ui/dialog";
 import { StoreProfileDialog } from "./store-profile-dialog";
+import { useNavigate } from "react-router";
+import { logout } from "@/api/logout";
 
 export function AccountMenu() {
+  const navigate = useNavigate();
+
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
@@ -26,6 +30,13 @@ export function AccountMenu() {
     queryKey: ["managed-restaurant"],
     queryFn: getManagedRestaurant,
     staleTime: Infinity,
+  });
+
+  const { mutateAsync: logoutFn, isPending: isLoggingOut } = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      navigate("/login", { replace: true });
+    },
   });
 
   return (
@@ -71,9 +82,15 @@ export function AccountMenu() {
             </DropdownMenuItem>
           </DialogTrigger>
 
-          <DropdownMenuItem className="text-rose-500 dark:text-rose-400">
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
+          <DropdownMenuItem
+            className="text-rose-500 dark:text-rose-400"
+            asChild
+            disabled={isLoggingOut}
+          >
+            <button className="w-full" onClick={() => logoutFn()}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
