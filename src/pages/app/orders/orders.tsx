@@ -17,14 +17,24 @@ import { z } from "zod";
 export function Orders() {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const orderId = searchParams.get("orderId");
+  const customerName = searchParams.get("customerName");
+  const status = searchParams.get("status");
+
   const pageIndex = z.coerce
     .number()
     .transform((page) => page - 1)
     .parse(searchParams.get("page") ?? "1");
 
   const { data: response } = useQuery({
-    queryKey: ["orders", pageIndex],
-    queryFn: () => getOrders({ pageIndex }),
+    queryKey: ["orders", pageIndex, orderId, status, customerName],
+    queryFn: () =>
+      getOrders({
+        pageIndex,
+        orderId,
+        status: status === "all" ? null : status,
+        customerName,
+      }),
   });
 
   function handlePaginate(pageIndex: number) {
