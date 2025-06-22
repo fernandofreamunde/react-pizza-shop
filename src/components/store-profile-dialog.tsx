@@ -23,7 +23,7 @@ import { toast } from "sonner";
 
 const storeProfileSchema = z.object({
   name: z.string().min(1),
-  description: z.string(),
+  description: z.string().nullable(),
 });
 
 type StoreProfileSchema = z.infer<typeof storeProfileSchema>;
@@ -51,19 +51,55 @@ export function StoreProfileDialog() {
 
   const { mutateAsync: updateProfileFn } = useMutation({
     mutationFn: updateProfile,
-    onSuccess(_, { description, name }) {
-      const cashed = queryClient.getQueryData<GetManagedRestaurantResponse>([
-        "managed-restaurant",
-      ]);
-
-      if (cashed) {
-        queryClient.setQueryData<GetManagedRestaurantResponse>(
-          ["managed-restaurant"],
-          { ...cashed, name, description },
-        );
+    // Note: if we want the ui to change only on sucess use following
+    //       because the nature of this particular mutation, we are
+    //       setting it as an optimist mutation (we assume it succedes)
+    //
+    //       since 99,9% of the times it will work. the new code covers
+    //       the failure and reverts changes if the request fails.
+    //
+    //       for the previous diff look for commit 'make optimist interface'
+    //
+    // onSuccess(_, { description, name }) {
+    //   const cashed = queryClient.getQueryData<GetManagedRestaurantResponse>([
+    //     "managed-restaurant",
+    //   ]);
+    //
+    //   if (cashed) {
+    //     queryClient.setQueryData<GetManagedRestaurantResponse>(
+    //       ["managed-restaurant"],
+    //       { ...cashed, name, description },
+    //     );
+    //   }
+    // },
+    onMutate({ description, name }) {
+      const { cashed } = updateManagedRestaurantCache({ description, name });
+      return { previousProfile: cashed };
+    },
+    onError(_error, _variables, context) {
+      if (context?.previousProfile) {
+        updateManagedRestaurantCache(context.previousProfile);
       }
     },
   });
+
+  function updateManagedRestaurantCache({
+    name,
+    description,
+  }: StoreProfileSchema) {
+    const cashed = queryClient.getQueryData<GetManagedRestaurantResponse>([
+      "managed-restaurant",
+    ]);
+
+    if (cashed) {
+      queryClient.setQueryData<GetManagedRestaurantResponse>(
+        ["managed-restaurant"],
+        { ...cashed, name, description },
+      );
+    }
+
+    return { cashed };
+  }
 
   async function handleUpdateProfile(data: StoreProfileSchema) {
     try {
