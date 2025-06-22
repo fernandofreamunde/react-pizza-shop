@@ -3,8 +3,21 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { ArrowRight, Search, X } from "lucide-react";
 import { OrderDetails } from "./order-details";
+import { formatDistanceToNow } from "date-fns";
+import { enUS } from "date-fns/locale";
+import { OrderStatus } from "./order-status";
 
-export function OrderTableRow() {
+interface OrderTableRowProps {
+  order: {
+    orderId: string;
+    createdAt: string;
+    status: "pending" | "canceled" | "processing" | "delivering" | "delivered";
+    customerName: string;
+    total: number;
+  };
+}
+
+export function OrderTableRow({ order }: OrderTableRowProps) {
   return (
     <TableRow>
       <TableCell>
@@ -21,17 +34,24 @@ export function OrderTableRow() {
       </TableCell>
 
       <TableCell className="font-mono text-xs font-medium">
-        5lntJL4XSZ1M8ZJ
+        {order.orderId}
       </TableCell>
-      <TableCell className="text-muted-foreground">15 minutes ago</TableCell>
+      <TableCell className="text-muted-foreground">
+        {formatDistanceToNow(order.createdAt, {
+          locale: enUS,
+          addSuffix: true,
+        })}
+      </TableCell>
       <TableCell>
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-slate-400" />
-          <span className="text-muted-foreground font-medium">Pending</span>
-        </div>
+        <OrderStatus status={order.status} />
       </TableCell>
-      <TableCell className="font-medium">Diego Schell Fernandes</TableCell>
-      <TableCell className="font-medium">€ 35.50</TableCell>
+      <TableCell className="font-medium">{order.customerName}</TableCell>
+      <TableCell className="font-medium">
+        {order.total.toLocaleString("en", {
+          style: "currency",
+          currency: "EUR",
+        })}
+      </TableCell>
       <TableCell>
         <Button variant="outline" size="xs">
           <ArrowRight className="mr-2 h-3 w-3" />
