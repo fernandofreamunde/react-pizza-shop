@@ -6,6 +6,8 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router";
+import { registerRestaurant } from "@/api/register-restaurant";
+import { useMutation } from "@tanstack/react-query";
 
 const registerForm = z.object({
   restaurantName: z.string(),
@@ -25,16 +27,26 @@ export function Register() {
     formState: { isSubmitting },
   } = useForm<RegisterForm>();
 
+  const { mutateAsync: registerRestaurantFn } = useMutation({
+    mutationFn: registerRestaurant,
+  });
+
   async function handleRegistration(data: RegisterForm) {
     console.log(data);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await registerRestaurantFn({
+        restaurantName: data.restaurantName,
+        managerName: data.managerName,
+        email: data.email,
+        phone: data.phone,
+      });
+
       toast.success("Restaurant successfully registred. 🎉", {
         action: {
           label: "Login",
           onClick: () => {
-            navigate("/login");
+            navigate(`/login?email=${data.email}`);
           },
         },
       });

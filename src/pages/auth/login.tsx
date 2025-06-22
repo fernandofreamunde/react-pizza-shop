@@ -5,7 +5,7 @@ import { z } from "zod";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/api/login";
 
@@ -16,11 +16,17 @@ const loginForm = z.object({
 type LoginForm = z.infer<typeof loginForm>;
 
 export function Login() {
+  const [searchParams] = useSearchParams();
+
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<LoginForm>();
+  } = useForm<LoginForm>({
+    defaultValues: {
+      email: searchParams.get("email") ?? "",
+    },
+  });
 
   const { mutateAsync: authenticate } = useMutation({
     mutationFn: login,
