@@ -1,4 +1,5 @@
 TODO Make a marketable read me here later.
+testing with vitest, testing-library + jest-dom, and happy-dom
 
 # React + TypeScript + Vite
 

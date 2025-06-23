@@ -21,19 +21,31 @@ export function OrderStatus({ status }: OrderStatusProps) {
   return (
     <div className="flex items-center gap-2">
       {status === "pending" && (
-        <span className="h-2 w-2 rounded-full bg-slate-400" />
+        <span
+          className="h-2 w-2 rounded-full bg-slate-400"
+          data-testid="badge"
+        />
       )}
 
       {status === "canceled" && (
-        <span className="h-2 w-2 rounded-full bg-rose-400" />
+        <span
+          className="h-2 w-2 rounded-full bg-rose-400"
+          data-testid="badge"
+        />
       )}
 
       {status === "delivered" && (
-        <span className="h-2 w-2 rounded-full bg-emerald-500" />
+        <span
+          className="h-2 w-2 rounded-full bg-emerald-500"
+          data-testid="badge"
+        />
       )}
 
       {["processing", "delivering"].includes(status) && (
-        <span className="h-2 w-2 rounded-full bg-amber-400" />
+        <span
+          className="h-2 w-2 rounded-full bg-amber-400"
+          data-testid="badge"
+        />
       )}
 
       <span className="text-muted-foreground font-medium">
