@@ -15,15 +15,15 @@ if (env.VITE_ENABLE_API_DELAY) {
   });
 }
 
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response.status === 401) {
-      // Redirecionar para a página de login
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
-  },
-);
+// api.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   (error) => {
+//     if (error.response.status === 401) {
+//       // Redirecionar para a página de login
+//       window.location.href = "/login";
+//     }
+//     return Promise.reject(error);
+//   },
+// );
