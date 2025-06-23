@@ -24,16 +24,7 @@ import type { DateRange } from "react-day-picker";
 import { subDays } from "date-fns";
 import { useQuery } from "@tanstack/react-query";
 import { getDailyRevenueInPeriod } from "@/api/get-daily-revenue-in-period";
-
-// const data = [
-//   { date: "23/6", revenue: 1506 },
-//   { date: "24/6", revenue: 1085 },
-//   { date: "25/6", revenue: 1192 },
-//   { date: "26/6", revenue: 1651 },
-//   { date: "27/6", revenue: 951 },
-//   { date: "28/6", revenue: 1495 },
-//   { date: "29/6", revenue: 1213 },
-// ];
+import { Loader2 } from "lucide-react";
 
 export function RevenueChart() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -76,7 +67,7 @@ export function RevenueChart() {
       </CardHeader>
 
       <CardContent>
-        {data && (
+        {data ? (
           <ResponsiveContainer width="100%" height={240}>
             <LineChart data={data} style={{ fontSize: 12 }}>
               <XAxis dataKey="date" axisLine={false} tickLine={false} dy={16} />
@@ -101,6 +92,10 @@ export function RevenueChart() {
               />
             </LineChart>
           </ResponsiveContainer>
+        ) : (
+          <div className="flex h-[240px] w-full items-center justify-center">
+            <Loader2 className="text-muted-foreground h-8 animate-spin" />
+          </div>
         )}
       </CardContent>
     </Card>
