@@ -24,7 +24,7 @@ export function Pagination({
   return (
     <div className="flex items-center justify-between">
       <span className="text-muted-foreground text-sm">
-        {totalCount} item(s)
+        {totalCount} item(s) in total.
       </span>
 
       <div className="flex items-center gap-6 lg:gap-8">
