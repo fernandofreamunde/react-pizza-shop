@@ -18,6 +18,7 @@ import {
   deliverOrderMock,
   dispatchOrderMock,
 } from "./order-actions-mock";
+import { registerRestaurantMock } from "./register-restaurant-mock";
 
 export const worker = setupWorker(
   loginMock,
@@ -36,6 +37,7 @@ export const worker = setupWorker(
   dispatchOrderMock,
   approveOrderMock,
   deliverOrderMock,
+  registerRestaurantMock,
 );
 
 export async function enableMSW() {
