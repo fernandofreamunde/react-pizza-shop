@@ -4,10 +4,10 @@ test("list orders", async ({ page }) => {
   await page.goto("/orders", { waitUntil: "networkidle" });
   await page.waitForTimeout(500);
 
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-1", exact: true }),
   ).toBeVisible();
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-10", exact: true }),
   ).toBeVisible();
 });
