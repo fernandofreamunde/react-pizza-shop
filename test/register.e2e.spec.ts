@@ -22,9 +22,9 @@ test("register restaurant successfully", async ({ page }) => {
 
   const toast = page.getByText("Restaurant successfully registred. 🎉");
 
-  expect(toast).toBeVisible();
+  await expect(toast).toBeVisible();
 
-  await page.waitForTimeout(500);
+  // await page.waitForTimeout(500);
 });
 
 test("error registering restaurant", async ({ page }) => {
@@ -43,7 +43,7 @@ test("error registering restaurant", async ({ page }) => {
 
   const toast = page.getByText("Error registering your restaurant.");
 
-  expect(toast).toBeVisible();
+  await expect(toast).toBeVisible();
 
-  await page.waitForTimeout(500);
+  // await page.waitForTimeout(500);
 });

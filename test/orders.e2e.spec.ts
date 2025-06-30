@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test("list orders", async ({ page }) => {
   await page.goto("/orders", { waitUntil: "networkidle" });
+  await page.waitForTimeout(500);
 
   expect(
     page.getByRole("cell", { name: "order-1", exact: true }),
@@ -17,40 +18,40 @@ test("navigate paginated orders", async ({ page }) => {
   // next page
   await page.getByRole("button", { name: "Next Page" }).click();
 
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-11", exact: true }),
   ).toBeVisible();
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-20", exact: true }),
   ).toBeVisible();
 
   // last page
   await page.getByRole("button", { name: "Last Page" }).click();
 
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-51", exact: true }),
   ).toBeVisible();
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-60", exact: true }),
   ).toBeVisible();
 
   // previous page
   await page.getByRole("button", { name: "Previous Page" }).click();
 
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-41", exact: true }),
   ).toBeVisible();
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-50", exact: true }),
   ).toBeVisible();
 
   // first page
   await page.getByRole("button", { name: "First Page" }).click();
 
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-1", exact: true }),
   ).toBeVisible();
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-10", exact: true }),
   ).toBeVisible();
 });
@@ -63,10 +64,12 @@ test("filter orders by id", async ({ page }) => {
 
   await page.waitForLoadState("networkidle");
 
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-1", exact: true }),
   ).toBeVisible();
-  expect(page.getByRole("cell", { name: "order-5", exact: true })).toBeHidden();
+  await expect(
+    page.getByRole("cell", { name: "order-5", exact: true }),
+  ).toBeHidden();
 });
 
 test("filter orders by customer name", async ({ page }) => {
@@ -77,10 +80,12 @@ test("filter orders by customer name", async ({ page }) => {
 
   await page.waitForLoadState("networkidle");
 
-  expect(
+  await expect(
     page.getByRole("cell", { name: "order-1", exact: true }),
   ).toBeVisible();
-  expect(page.getByRole("cell", { name: "order-5", exact: true })).toBeHidden();
+  await expect(
+    page.getByRole("cell", { name: "order-5", exact: true }),
+  ).toBeHidden();
 });
 
 test("filter orders by status pending", async ({ page }) => {
@@ -93,7 +98,7 @@ test("filter orders by status pending", async ({ page }) => {
   await page.waitForTimeout(500);
 
   const tableRows = await page.getByRole("cell", { name: "Pending" }).all();
-  expect(tableRows).toHaveLength(10);
+  await expect(tableRows).toHaveLength(10);
 });
 
 test("filter orders by status delivering", async ({ page }) => {
@@ -106,7 +111,7 @@ test("filter orders by status delivering", async ({ page }) => {
   await page.waitForTimeout(500);
 
   const tableRows = await page.getByRole("cell", { name: "In Delivery" }).all();
-  expect(tableRows).toHaveLength(10);
+  await expect(tableRows).toHaveLength(10);
 });
 
 test("filter orders by status delivered", async ({ page }) => {
@@ -119,7 +124,7 @@ test("filter orders by status delivered", async ({ page }) => {
   await page.waitForTimeout(500);
 
   const tableRows = await page.getByRole("cell", { name: "Delivered" }).all();
-  expect(tableRows).toHaveLength(10);
+  await expect(tableRows).toHaveLength(10);
 });
 
 test("filter orders by status processing", async ({ page }) => {
@@ -132,7 +137,7 @@ test("filter orders by status processing", async ({ page }) => {
   await page.waitForTimeout(500);
 
   const tableRows = await page.getByRole("cell", { name: "Processing" }).all();
-  expect(tableRows).toHaveLength(10);
+  await expect(tableRows).toHaveLength(10);
 });
 
 test("filter orders by status canceled", async ({ page }) => {
@@ -145,5 +150,5 @@ test("filter orders by status canceled", async ({ page }) => {
   await page.waitForTimeout(500);
 
   const tableRows = await page.getByRole("cell", { name: "Canceled" }).all();
-  expect(tableRows).toHaveLength(10);
+  await expect(tableRows).toHaveLength(10);
 });

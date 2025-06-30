@@ -19,7 +19,7 @@ test("fail to update profile info", async ({ page }) => {
     "Profile failed to update! Please try again. ⚠️",
   );
 
-  expect(toast).toBeVisible();
+  await expect(toast).toBeVisible();
 
   await page.getByRole("button", { name: "Close" }).click();
 
@@ -27,9 +27,9 @@ test("fail to update profile info", async ({ page }) => {
     .getByRole("dialog", { name: "Shop Profile" })
     .waitFor({ state: "hidden" });
 
-  expect(page.getByRole("button", { name: "Pizza Shop" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Pizza Shop" })).toBeVisible();
 
-  await page.waitForTimeout(500);
+  // await page.waitForTimeout(500);
 });
 
 test("successfuly update profile info", async ({ page }) => {
@@ -49,7 +49,7 @@ test("successfuly update profile info", async ({ page }) => {
 
   const toast = page.getByText("Profile updated successfuly! ✅");
 
-  expect(toast).toBeVisible();
+  await expect(toast).toBeVisible();
 
   await page.getByRole("button", { name: "Close" }).click();
 
@@ -57,7 +57,9 @@ test("successfuly update profile info", async ({ page }) => {
     .getByRole("dialog", { name: "Shop Profile" })
     .waitFor({ state: "hidden" });
 
-  expect(page.getByRole("button", { name: "Rocket Pizza" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Rocket Pizza" }),
+  ).toBeVisible();
 
-  await page.waitForTimeout(500);
+  //await page.waitForTimeout(500);
 });

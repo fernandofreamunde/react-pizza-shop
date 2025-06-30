@@ -13,9 +13,9 @@ test("log in successfully", async ({ page }) => {
     "We have sent you a magic link 🪄 to your email.",
   );
 
-  expect(toast).toBeVisible();
+  await expect(toast).toBeVisible();
 
-  await page.waitForTimeout(500);
+  // await page.waitForTimeout(500);
 });
 
 test("log in with wrong credentials", async ({ page }) => {
@@ -29,9 +29,9 @@ test("log in with wrong credentials", async ({ page }) => {
 
   const toast = page.getByText("Invalid credentials");
 
-  expect(toast).toBeVisible();
+  await expect(toast).toBeVisible();
 
-  await page.waitForTimeout(500);
+  // await page.waitForTimeout(500);
 });
 
 test("can navigate to registration form", async ({ page }) => {
@@ -39,7 +39,7 @@ test("can navigate to registration form", async ({ page }) => {
 
   await page.getByRole("link", { name: "Register" }).click();
 
-  await page.waitForTimeout(500);
+  // await page.waitForTimeout(500);
 
   expect(page.url()).toContain("/register");
 });
